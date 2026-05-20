@@ -1,0 +1,48 @@
+export const BRANDS = [
+  {
+    id: "xrxs",
+    name: "XRXS",
+    fullName: "Xerxes",
+    genre: "Christian Pop",
+    color: "#c9a84c",
+    colorDim: "#c9a84c30",
+    platforms: ["spotify", "apple", "tiktok", "instagram"],
+    followers: { tiktok: 412, instagram: 287, spotify: 143 },
+    monthlyListeners: 143,
+  },
+  {
+    id: "m3k1",
+    name: "M3K1",
+    fullName: "Mekki",
+    genre: "Pop Rap",
+    color: "#8b5cf6",
+    colorDim: "#8b5cf630",
+    platforms: ["spotify", "apple", "tiktok", "instagram", "youtube"],
+    followers: { tiktok: 831, instagram: 654, spotify: 219, youtube: 47 },
+    monthlyListeners: 219,
+  },
+  {
+    id: "fortis",
+    name: "Fortis Mane",
+    fullName: "Fortis Mane",
+    genre: "Luxury Fitness",
+    color: "#10b981",
+    colorDim: "#10b98130",
+    platforms: ["instagram", "tiktok", "shopify"],
+    followers: { tiktok: 203, instagram: 1240 },
+    monthlyListeners: 0,
+  },
+  {
+    id: "philosopher",
+    name: "Philosopher Stoned",
+    fullName: "The Philosopher Stoned",
+    genre: "YouTube / Lifestyle",
+    color: "#4c7fc9",
+    colorDim: "#4c7fc930",
+    platforms: ["youtube", "instagram"],
+    followers: { youtube: 312, instagram: 189 },
+    monthlyListeners: 0,
+  },
+]
+
+export type Brand = typeof BRANDS[number]
