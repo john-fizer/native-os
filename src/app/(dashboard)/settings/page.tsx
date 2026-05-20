@@ -5,15 +5,23 @@ import PageHeader from "@/components/PageHeader"
 import { Key, CheckCircle, XCircle, Eye, EyeOff, Save, Loader2 } from "lucide-react"
 
 const API_KEYS = [
-  { label: "Claude API Key", key: "ANTHROPIC_API_KEY", hint: "Enables AI briefs, lyric gen, boardroom report", required: true },
-  { label: "TikTok Business API", key: "TIKTOK_API_KEY", hint: "Auto-posting to TikTok", required: false },
-  { label: "Instagram Graph API", key: "INSTAGRAM_ACCESS_TOKEN", hint: "Instagram automation and analytics", required: false },
-  { label: "YouTube Data API v3", key: "YOUTUBE_API_KEY", hint: "YouTube analytics and clip automation", required: false },
-  { label: "Spotify Client ID", key: "SPOTIFY_CLIENT_ID", hint: "Streaming stats for XRXS and M3K1", required: false },
-  { label: "ACRCloud (copyright)", key: "ACRCLOUD_ACCESS_KEY", hint: "Audio copyright scanning", required: false },
-  { label: "Printful API", key: "PRINTFUL_API_KEY", hint: "Merch automation and order management", required: false },
-  { label: "Shopify Admin API", key: "SHOPIFY_ACCESS_TOKEN", hint: "Storefront sync and order tracking", required: false },
+  { label: "Claude API Key", key: "ANTHROPIC_API_KEY", hint: "Enables AI briefs, lyric gen, boardroom report. Get it at console.anthropic.com", required: true, group: "AI" },
+  { label: "YouTube Data API v3", key: "YOUTUBE_API_KEY", hint: "Lobby real follower counts + video analytics. console.cloud.google.com → enable YouTube Data API v3", required: false, group: "Platforms" },
+  { label: "YouTube Channel ID — Philosopher Stoned", key: "YOUTUBE_CHANNEL_PHILOSOPHER", hint: "Your channel ID (not username). Find it: youtube.com/@handle → About → Share → Copy channel ID", required: false, group: "Platforms" },
+  { label: "YouTube Channel ID — M3K1", key: "YOUTUBE_CHANNEL_M3K1", hint: "Your M3K1 YouTube channel ID", required: false, group: "Platforms" },
+  { label: "Spotify Client ID", key: "SPOTIFY_CLIENT_ID", hint: "Streaming follower counts. Create app at developer.spotify.com", required: false, group: "Platforms" },
+  { label: "Spotify Client Secret", key: "SPOTIFY_CLIENT_SECRET", hint: "Paired with Client ID. Found in your Spotify developer app settings", required: false, group: "Platforms" },
+  { label: "Spotify Artist ID — XRXS", key: "SPOTIFY_ARTIST_XRXS", hint: "Right-click your artist profile in Spotify → Share → Copy link. The ID is the last segment of the URL", required: false, group: "Platforms" },
+  { label: "Spotify Artist ID — M3K1", key: "SPOTIFY_ARTIST_M3K1", hint: "Same as above for M3K1", required: false, group: "Platforms" },
+  { label: "TikTok Access Token", key: "TIKTOK_ACCESS_TOKEN", hint: "OAuth token from TikTok for Business. Apply at developers.tiktok.com — requires business account verification", required: false, group: "Platforms" },
+  { label: "Instagram Graph API Token", key: "INSTAGRAM_ACCESS_TOKEN", hint: "Long-lived token from Facebook Developer portal. Requires Instagram Professional account linked to Facebook Business", required: false, group: "Platforms" },
+  { label: "ACRCloud Access Key", key: "ACRCLOUD_ACCESS_KEY", hint: "Audio copyright scanning. Free tier available at acrcloud.com", required: false, group: "Legal" },
+  { label: "ACRCloud Access Secret", key: "ACRCLOUD_ACCESS_SECRET", hint: "Paired with ACRCloud Access Key", required: false, group: "Legal" },
+  { label: "Printful API Key", key: "PRINTFUL_API_KEY", hint: "Merch automation. Get it at printful.com → Settings → Stores → API", required: false, group: "Merch" },
+  { label: "Shopify Access Token", key: "SHOPIFY_ACCESS_TOKEN", hint: "Storefront sync. Shopify Admin → Apps → Develop apps", required: false, group: "Merch" },
 ]
+
+const GROUPS = ["AI", "Platforms", "Legal", "Merch"]
 
 export default function SettingsPage() {
   const [statuses, setStatuses] = useState<Record<string, boolean>>({})
@@ -86,15 +94,15 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Keys */}
-      <div
-        className="rounded-xl overflow-hidden"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
-      >
-        <div className="px-4 py-3 border-b" style={{ borderColor: "var(--border)" }}>
-          <p className="text-sm font-semibold" style={{ color: "var(--foreground)" }}>API Keys</p>
-        </div>
-        {API_KEYS.map((api) => {
+      {/* Keys grouped */}
+      {GROUPS.map(group => {
+        const keys = API_KEYS.filter(k => k.group === group)
+        return (
+          <div key={group} className="rounded-xl overflow-hidden mb-4" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+            <div className="px-4 py-3 border-b" style={{ borderColor: "var(--border)" }}>
+              <p className="text-sm font-semibold" style={{ color: "var(--foreground)" }}>{group}</p>
+            </div>
+            {keys.map((api) => {
           const connected = statuses[api.key]
           const isSaving = saving[api.key]
           const isSaved = saved[api.key]
@@ -168,8 +176,10 @@ export default function SettingsPage() {
               </div>
             </div>
           )
-        })}
-      </div>
+            })}
+          </div>
+        )
+      })}
 
       <div className="mt-4 p-4 rounded-xl text-xs" style={{ background: "var(--surface)", border: "1px solid var(--accent-gold)33", color: "var(--muted)" }}>
         <strong style={{ color: "var(--accent-gold)" }}>Note:</strong> After saving your Claude API key, restart the dev server (<code style={{ color: "var(--foreground)" }}>npm run dev</code>) for the key to take effect in API routes.
