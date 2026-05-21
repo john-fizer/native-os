@@ -14,12 +14,14 @@ import {
   Users,
   Settings,
   Zap,
+  Factory,
   ChevronRight,
 } from "lucide-react"
 
 const NAV = [
   { label: "Lobby", href: "/lobby", icon: LayoutDashboard, desc: "Overview" },
   { label: "Studio", href: "/studio", icon: Music2, desc: "Creative" },
+  { label: "Factory", href: "/factory", icon: Factory, desc: "Content Engine" },
   { label: "Production", href: "/production", icon: Clapperboard, desc: "Content Queue" },
   { label: "Merch", href: "/merch", icon: ShoppingBag, desc: "POD Engine" },
   { label: "Legal", href: "/legal", icon: Scale, desc: "IP & Copyright" },
