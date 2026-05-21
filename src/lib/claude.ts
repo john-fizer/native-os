@@ -99,6 +99,69 @@ Give me 4 wins, 4 gaps, 5 priorities, and 1 key insight. JSON only.`,
   return null
 }
 
+export async function generateMarketingBrief(data: {
+  date: string
+  brands: Array<{
+    name: string
+    platformStats: Array<{ platform: string; followers: number; engagement?: string; postsThisWeek: number }>
+  }>
+  queueStats: { total: number; posted: number; ready: number; draft: number }
+  financeThisMonth: { income: number; expenses: number }
+  topCategories: string[]
+}) {
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 1200,
+    system: `You are the head of marketing for Native OS, a multi-brand creative enterprise managing music, fitness, and lifestyle brands.
+Your job: analyze this week's data and produce a tight, actionable strategy brief.
+Be direct. No fluff. Think like a growth marketer who has seen hundreds of brand accounts.
+Return JSON only — no markdown, no explanation outside the JSON.`,
+    messages: [
+      {
+        role: "user",
+        content: `Generate a marketing strategy brief for the week of ${data.date}.
+
+BRAND PERFORMANCE:
+${data.brands.map(b => `
+${b.name}:
+${b.platformStats.map(p => `  ${p.platform}: ${p.followers} followers${p.engagement ? `, ${p.engagement} engagement` : ""}, ${p.postsThisWeek} posts this week`).join("\n")}
+`).join("")}
+
+CONTENT PIPELINE:
+- Total queue: ${data.queueStats.total} items
+- Posted this period: ${data.queueStats.posted}
+- Ready to post: ${data.queueStats.ready}
+- Still in draft: ${data.queueStats.draft}
+
+FINANCIALS THIS MONTH:
+- Income: $${data.financeThisMonth.income.toFixed(2)}
+- Expenses: $${data.financeThisMonth.expenses.toFixed(2)}
+- Net: $${(data.financeThisMonth.income - data.financeThisMonth.expenses).toFixed(2)}
+- Top revenue categories: ${data.topCategories.join(", ") || "n/a"}
+
+Return this exact JSON shape:
+{
+  "weekOf": "${data.date}",
+  "topPriority": "single most important action this week",
+  "brandActions": [
+    { "brand": "...", "focus": "one-line strategic focus", "actions": ["action 1", "action 2", "action 3"], "alert": "any risk or opportunity to flag, or null" }
+  ],
+  "contentStrategy": { "increase": ["..."], "cut": ["..."], "test": ["..."] },
+  "growthLever": "the single highest-leverage growth move across all brands right now",
+  "revenueNote": "one sentence on the financial picture and what to do about it"
+}`,
+      },
+    ],
+  })
+
+  try {
+    const text = (response.content[0] as { type: string; text: string }).text
+    const jsonMatch = text.match(/\{[\s\S]*\}/)
+    if (jsonMatch) return JSON.parse(jsonMatch[0])
+  } catch {}
+  return null
+}
+
 function buildPrompt(type: string, brand: string, context?: string): string {
   const ctx = context ? `\nContext: ${context}` : ""
 
