@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import ThemeSwitcher from "@/components/ThemeSwitcher"
 import {
   LayoutDashboard,
   Music2,
@@ -88,6 +89,11 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      {/* Theme switcher */}
+      <div className="px-2 pb-1 border-t pt-2" style={{ borderColor: "var(--border)" }}>
+        <ThemeSwitcher />
+      </div>
 
       {/* Brand selector */}
       <div className="p-3 border-t" style={{ borderColor: "var(--border)" }}>
