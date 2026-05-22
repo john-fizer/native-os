@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import { ThemeId } from "@/lib/themes"
+import { ThemeId, THEMES } from "@/lib/themes"
 
 interface ThemeContextValue {
   theme: ThemeId
@@ -18,7 +18,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("native-os-theme") as ThemeId | null
-    if (saved) apply(saved)
+    const valid = THEMES.map(t => t.id)
+    if (saved && valid.includes(saved)) apply(saved)
   }, [])
 
   function apply(t: ThemeId) {

@@ -251,6 +251,311 @@ body {
 }
 
 
+/* ─── NOIR THEME ────────────────────────────────────────────────────────── */
+[data-theme="noir"] {
+  --background:    #050505;
+  --foreground:    #f0f0f0;
+  --surface:       #0f0f0f;
+  --surface-2:     #1a1a1a;
+  --border:        #2a2a2a;
+  --accent-gold:   #ffffff;
+  --accent-blue:   #bbbbbb;
+  --accent-purple: #999999;
+  --accent-green:  #aaaaaa;
+  --accent-red:    #666666;
+  --muted:         #555555;
+}
+
+[data-theme="noir"] body {
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+/* Film grain */
+[data-theme="noir"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+[data-theme="noir"] .rounded-xl,
+[data-theme="noir"] .rounded-lg {
+  border-radius: 2px !important;
+}
+
+
+/* ─── CYBERPUNK THEME ────────────────────────────────────────────────────── */
+[data-theme="cyberpunk"] {
+  --background:    #08001a;
+  --foreground:    #f0e8ff;
+  --surface:       #100025;
+  --surface-2:     #1a003a;
+  --border:        #6600cc44;
+  --accent-gold:   #ff00aa;
+  --accent-blue:   #00ffff;
+  --accent-purple: #cc00ff;
+  --accent-green:  #39ff14;
+  --accent-red:    #ff0044;
+  --muted:         #7700aa;
+}
+
+[data-theme="cyberpunk"] body {
+  font-family: "Courier New", monospace;
+}
+
+/* Neon grid floor */
+[data-theme="cyberpunk"] body::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background:
+    linear-gradient(transparent 0%, rgba(255,0,170,0.03) 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,0,170,0.07) 60px),
+    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0,255,255,0.05) 60px);
+  pointer-events: none;
+  z-index: 0;
+  transform: perspective(300px) rotateX(40deg);
+  transform-origin: bottom center;
+}
+
+/* Neon scanlines */
+[data-theme="cyberpunk"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(255, 0, 170, 0.015) 3px,
+    rgba(255, 0, 170, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Neon glow on cards */
+[data-theme="cyberpunk"] .rounded-xl {
+  box-shadow: 0 0 0 1px rgba(255,0,170,0.15), 0 0 20px rgba(255,0,170,0.05), inset 0 0 20px rgba(0,255,255,0.02) !important;
+}
+
+@keyframes neon-pulse {
+  0%, 100% { text-shadow: 0 0 4px #ff00aa, 0 0 10px #ff00aa44; }
+  50%       { text-shadow: 0 0 2px #ff00aa, 0 0 6px #ff00aa33; }
+}
+
+
+/* ─── ALIEN THEME ────────────────────────────────────────────────────────── */
+[data-theme="alien"] {
+  --background:    #000a08;
+  --foreground:    #80ffcc;
+  --surface:       #001a12;
+  --surface-2:     #002a1e;
+  --border:        #00ff9d22;
+  --accent-gold:   #00ff9d;
+  --accent-blue:   #00ccff;
+  --accent-purple: #7dffd4;
+  --accent-green:  #33ff99;
+  --accent-red:    #ff4488;
+  --muted:         #005533;
+}
+
+[data-theme="alien"] body {
+  font-family: "Courier New", monospace;
+}
+
+/* Bioluminescent pulse */
+[data-theme="alien"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(0,255,157,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(0,204,255,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0,255,157,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: alien-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes alien-pulse {
+  0%   { opacity: 0.7; }
+  100% { opacity: 1.2; }
+}
+
+/* Organic hex grid */
+[data-theme="alien"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104'%3E%3Cpath d='M30 2 L58 17 L58 47 L30 62 L2 47 L2 17 Z' fill='none' stroke='rgba(0,255,157,0.05)' stroke-width='1'/%3E%3Cpath d='M30 52 L58 67 L58 97 L30 112 L2 97 L2 67 Z' fill='none' stroke='rgba(0,255,157,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="alien"] .rounded-xl {
+  box-shadow: 0 0 0 1px rgba(0,255,157,0.1), 0 0 15px rgba(0,255,157,0.04) !important;
+}
+
+
+/* ─── SYNTHWAVE THEME ────────────────────────────────────────────────────── */
+[data-theme="synthwave"] {
+  --background:    #0d001a;
+  --foreground:    #ffd6ff;
+  --surface:       #1a0030;
+  --surface-2:     #250044;
+  --border:        #6600cc55;
+  --accent-gold:   #ff00ff;
+  --accent-blue:   #00eeff;
+  --accent-purple: #cc00ff;
+  --accent-green:  #39ff14;
+  --accent-red:    #ff3366;
+  --muted:         #6600cc;
+}
+
+[data-theme="synthwave"] body {
+  font-family: "Courier New", monospace;
+}
+
+/* Retro grid floor */
+[data-theme="synthwave"] body::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(255,0,255,0.12) 50px),
+    repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,238,255,0.08) 50px),
+    linear-gradient(transparent 0%, rgba(13,0,26,0.8) 100%);
+  pointer-events: none;
+  z-index: 0;
+  transform: perspective(400px) rotateX(50deg);
+  transform-origin: bottom center;
+}
+
+/* Sunset gradient top */
+[data-theme="synthwave"] body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(
+    180deg,
+    rgba(255,100,0,0.08) 0%,
+    rgba(255,0,128,0.06) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="synthwave"] .rounded-xl {
+  box-shadow: 0 0 0 1px rgba(255,0,255,0.15), 0 0 20px rgba(255,0,255,0.06), 0 0 40px rgba(0,238,255,0.03) !important;
+}
+
+@keyframes synth-glow {
+  0%, 100% { box-shadow: 0 0 5px #ff00ff44, 0 0 20px #ff00ff22; }
+  50%       { box-shadow: 0 0 10px #00eeff44, 0 0 30px #00eeff22; }
+}
+
+
+/* ─── ARCTIC THEME ───────────────────────────────────────────────────────── */
+[data-theme="arctic"] {
+  --background:    #020810;
+  --foreground:    #d4eeff;
+  --surface:       #061525;
+  --surface-2:     #0a2035;
+  --border:        #1a3a5a;
+  --accent-gold:   #5bc8ff;
+  --accent-blue:   #00aaff;
+  --accent-purple: #a8d8ff;
+  --accent-green:  #22d3ee;
+  --accent-red:    #f87171;
+  --muted:         #2a5a80;
+}
+
+/* Ice crystal overlay */
+[data-theme="arctic"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%,   rgba(91,200,255,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(0,170,255,0.06)  0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%,  rgba(168,216,255,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="arctic"] .rounded-xl {
+  box-shadow: 0 0 0 1px rgba(91,200,255,0.12), 0 4px 24px rgba(0,170,255,0.05) !important;
+}
+
+
+/* ─── BLOODMOON THEME ────────────────────────────────────────────────────── */
+[data-theme="bloodmoon"] {
+  --background:    #080000;
+  --foreground:    #ffe0dc;
+  --surface:       #150000;
+  --surface-2:     #200000;
+  --border:        #440000;
+  --accent-gold:   #cc2200;
+  --accent-blue:   #ff4400;
+  --accent-purple: #991100;
+  --accent-green:  #ff6644;
+  --accent-red:    #ff0000;
+  --muted:         #550000;
+}
+
+/* Blood moon glow */
+[data-theme="bloodmoon"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(204,34,0,0.12)  0%, transparent 55%),
+    radial-gradient(ellipse at 20% 90%, rgba(255,0,0,0.06)   0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(153,17,0,0.04)  0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: blood-pulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes blood-pulse {
+  0%   { opacity: 0.8; }
+  100% { opacity: 1.2; }
+}
+
+[data-theme="bloodmoon"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(204, 34, 0, 0.015) 3px,
+    rgba(204, 34, 0, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+[data-theme="bloodmoon"] .rounded-xl {
+  box-shadow: 0 0 0 1px rgba(204,34,0,0.15), 0 0 20px rgba(204,34,0,0.05) !important;
+}
+
+
 /* ─── COSMOS THEME ───────────────────────────────────────────────────────── */
 [data-theme="cosmos"] {
   --background:    #04010e;
