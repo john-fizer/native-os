@@ -22,6 +22,29 @@ insert into brands (id, name, full_name, genre, color, platforms) values
 on conflict (id) do nothing;
 
 -- ============================================================
+-- BRAND LINKS (websites, streaming, social, storefronts)
+-- ============================================================
+create table if not exists brand_links (
+  id uuid primary key default gen_random_uuid(),
+  brand_id text references brands(id) unique,
+  website text,
+  etsy_url text,
+  shopify_url text,
+  spotify_url text,
+  apple_music_url text,
+  youtube_url text,
+  tiktok_url text,
+  instagram_url text,
+  soundcloud_url text,
+  linktree_url text,
+  updated_at timestamptz default now()
+);
+
+insert into brand_links (brand_id, website) values
+  ('fortis', 'https://fortismane.com')
+on conflict (brand_id) do nothing;
+
+-- ============================================================
 -- CONTENT QUEUE (Production Floor)
 -- ============================================================
 create table if not exists content_queue (
@@ -218,6 +241,7 @@ create table if not exists platform_snapshots (
 -- ROW LEVEL SECURITY (enable for all tables)
 -- ============================================================
 alter table brands              enable row level security;
+alter table brand_links         enable row level security;
 alter table content_queue       enable row level security;
 alter table assets              enable row level security;
 alter table legal_scans         enable row level security;
@@ -243,3 +267,4 @@ create policy "Service full access generated_content"  on generated_content  usi
 create policy "Service full access merch_design_jobs"  on merch_design_jobs  using (true) with check (true);
 create policy "Service full access video_jobs"         on video_jobs         using (true) with check (true);
 create policy "Service full access platform_snapshots" on platform_snapshots using (true) with check (true);
+create policy "Service full access brand_links"        on brand_links        using (true) with check (true);
