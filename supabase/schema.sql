@@ -238,6 +238,23 @@ create table if not exists platform_snapshots (
 );
 
 -- ============================================================
+-- AGENT RUNS (agentic pipeline monitoring)
+-- ============================================================
+create table if not exists agent_runs (
+  id uuid primary key default gen_random_uuid(),
+  agent_type text not null,   -- youtube_research | thumbnail_pipeline | merch | legal
+  status text not null default 'running',  -- running | completed | failed
+  input jsonb not null default '{}',
+  output jsonb,
+  steps jsonb default '[]',   -- array of {step, type, tool, input, output, timestamp}
+  tokens_used integer default 0,
+  duration_ms integer,
+  error text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- ============================================================
 -- ROW LEVEL SECURITY (enable for all tables)
 -- ============================================================
 alter table brands              enable row level security;
@@ -268,3 +285,5 @@ create policy "Service full access merch_design_jobs"  on merch_design_jobs  usi
 create policy "Service full access video_jobs"         on video_jobs         using (true) with check (true);
 create policy "Service full access platform_snapshots" on platform_snapshots using (true) with check (true);
 create policy "Service full access brand_links"        on brand_links        using (true) with check (true);
+alter table agent_runs enable row level security;
+create policy "Service full access agent_runs" on agent_runs using (true) with check (true);

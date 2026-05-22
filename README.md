@@ -21,73 +21,59 @@ Built for independent creators who operate like a label, an agency, and a startu
 
 ## Screenshots
 
-### HQ Lobby — Your command center
-Real-time follower counts, revenue breakdown, growth charts, and activity feed across all four brands. Each brand card tracks progress to 100K followers.
+### Dashboard — Command center
+Real-time follower counts, revenue breakdown, growth charts, and activity feed across all four brands.
 
-![Lobby](docs/screenshots/lobby.png)
-
----
-
-### Studio — Creative asset management + AI generator
-Track every track, video, and design across brands. The AI Creative Brief generator is powered by Claude — pick a brand, pick a content type (TikTok hook, verse lyrics, caption copy, merch prompt, video script), and get on-brand output in seconds.
-
-![Studio](docs/screenshots/studio.png)
+![Dashboard](screenshots/dashboard.png)
 
 ---
 
-### Production Floor — Content queue
-Full content queue with status tracking (Draft → Legal Review → Ready → Posted). One-click publish when cleared.
+### Marketing — AI Analysis
+Hit "Run AI Analysis" and Claude audits your brand data live — top priority, per-brand action plans, content strategy, and growth lever.
 
-![Production](docs/screenshots/production.png)
-
----
-
-### Marketing — Platform analytics + strategy
-Per-platform follower counts, reach, and engagement rates. Brand performance radar chart, content mix breakdown, and a weekly AI strategy brief.
-
-![Marketing](docs/screenshots/marketing.png)
+![Marketing](screenshots/marketing.png)
 
 ---
 
-### Legal — IP & copyright protection
-Every audio file, visual asset, and brand name scanned before it goes live. Powered by ACRCloud for music copyright detection. Flags are highlighted with action required notices — nothing slips through.
+### Automation — AI Agents + Pipelines
+Live agent run monitoring with step-by-step traces. Launch the YouTube Research Agent, watch it work in real time, see every tool call it made.
 
-![Legal](docs/screenshots/legal.png)
-
----
-
-### Merch Engine — Print-on-demand automation
-Live product tracking, sales and revenue per item, and an AI design idea queue. Generate Midjourney-ready prompts per brand, scan for IP conflicts, then push directly to Printful.
-
-![Merch](docs/screenshots/merch.png)
+![Automation](screenshots/automation.png)
 
 ---
 
-### Finance — Revenue and P&L
-Income and expense tracking across streams, merch, and YouTube. Area chart P&L by month, broken down by source.
+### Content Queue
+Full content queue with status tracking (Draft → Legal Review → Ready → Posted).
 
-![Finance](docs/screenshots/finance.png)
-
----
-
-### Boardroom — AI executive briefing
-Hit "Generate Live Report" and Claude analyzes your brand data in real time — wins, gaps, top 5 priorities for the week, and one key insight you probably haven't noticed.
-
-![Boardroom](docs/screenshots/boardroom.png)
+![Content](screenshots/content.png)
 
 ---
 
-### Automation — Pipeline registry
-Track all n8n automation pipelines: TikTok auto-post, copyright scanning, YouTube → clip generation, merch design pipeline, weekly AI brief, collab outreach. Active/paused/needs-setup at a glance.
+### Brand Profiles
+Manage website, storefront, and social links for every brand in one place.
 
-![Automation](docs/screenshots/automation.png)
+![Brands](screenshots/brands.png)
 
 ---
 
-### Settings — API key management
-Paste keys directly in the UI — they save to `.env.local` and never touch git. Grouped by category (AI, Platforms, Legal, Merch) with exact instructions for where to get each key.
+### Studio — Asset management
+Track every track, video, and design. AI Creative Brief generator powered by Claude.
 
-![Settings](docs/screenshots/settings.png)
+![Studio](screenshots/studio.png)
+
+---
+
+### Merch Engine
+Live product tracking, AI design generation, push directly to Printful.
+
+![Merch](screenshots/merch.png)
+
+---
+
+### Finance — P&L
+Income and expense tracking across streams, merch, and YouTube.
+
+![Finance](screenshots/finance.png)
 
 ---
 
@@ -95,14 +81,28 @@ Paste keys directly in the UI — they save to `.env.local` and never touch git.
 
 | Layer | Tech |
 |---|---|
-| Framework | Next.js 16 (App Router, TypeScript) |
-| Styling | Tailwind CSS |
+| Framework | Next.js (App Router, TypeScript) |
+| Database | Supabase (PostgreSQL + RLS) |
+| Styling | Tailwind CSS — 12 visual themes |
 | Charts | Recharts |
-| AI | Claude API (claude-sonnet-4-6) |
-| Platform APIs | YouTube Data v3, Spotify Web API, TikTok Business API, Instagram Graph API |
+| AI | Claude API (claude-sonnet-4-6) + Tool Use |
+| Agents | YouTube Research Agent, Thumbnail Pipeline |
+| Platform APIs | YouTube Data v3, Spotify, TikTok, Instagram |
+| Images | Ideogram API (thumbnails, merch) |
 | Merch | Printful + Shopify |
 | Copyright | ACRCloud |
-| Caching | In-process (5-min TTL) |
+
+---
+
+## v2 Features
+
+- **Supabase backend** — all data persisted in PostgreSQL
+- **12 visual themes** — Native, JARVIS, Matrix, Cyberpunk, Cosmos, Alien, Synthwave, Bloodmoon, Win95, Noir, Arctic, Sleek
+- **AI Marketing Brief** — Claude-powered live boardroom analysis
+- **YouTube Research Agent** — agentic SEO intelligence (searches, stats, keyword research, content gaps)
+- **SEO Thumbnail Pipeline** — research-informed CTR-optimized variants with Ideogram image generation
+- **Live agent monitoring** — step-by-step traces for every agent run
+- **Brand Profiles** — website, storefront, and social link management per brand
 
 ---
 
@@ -119,50 +119,46 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## Connecting Real Data
+## Environment Variables
 
-Go to `/settings` and add your API keys. Start here for the fastest wins:
+Create `.env.local` with:
 
-**1. Claude API** — `console.anthropic.com`
-Unlocks the AI Brief Generator in Studio and the live Boardroom report.
+```env
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+ANTHROPIC_API_KEY=...
+YOUTUBE_API_KEY=...
+IDEOGRAM_API_KEY=...       # optional — enables AI thumbnail images
+ELEVENLABS_API_KEY=...     # optional — voice generation
+```
 
-**2. YouTube Data API v3** — `console.cloud.google.com`
-Enable YouTube Data API v3, create an API key. Find your channel IDs: YouTube → About → Share → Copy channel ID.
-
-**3. Spotify** — `developer.spotify.com`
-Create an app, grab Client ID and Secret. Artist IDs are the last segment of any Spotify artist URL.
-
-**4. TikTok Business API** — `developers.tiktok.com`
-Requires business account verification. Apply, then use the OAuth flow.
-
-**5. Instagram Graph API** — `developers.facebook.com`
-Requires a Facebook Business account with an Instagram Professional account linked.
+Run `supabase/schema.sql` in your Supabase SQL Editor to create all tables.
 
 > All keys are stored in `.env.local` only — never committed to git.
 
 ---
 
-## AI Features
+## AI Agents
 
-The Studio generates brand-specific content using each brand's voice profile:
+### YouTube Research Agent
+Performs multi-step SEO research using the YouTube Data API:
+1. Searches topic + related angles
+2. Gets detailed stats on top performers
+3. Researches keyword variations
+4. Identifies content gaps and patterns
 
-| Content Type | What it generates |
-|---|---|
-| Hook (TikTok) | 3 scroll-stopping hooks under 8 words each |
-| Verse lyrics | Full verse with rhyme scheme, on-brand |
-| Caption copy | 3 Instagram/TikTok captions with CTAs and hashtags |
-| Merch prompt | 3 Midjourney-ready design prompts |
-| Content script | Full 30-60s video script with timestamps |
+Returns: keywords with competition levels, title formulas, thumbnail patterns, recommended angle, SEO title, and content brief.
 
-The Boardroom generates a weekly executive brief: wins, gaps, top 5 priorities, and one key insight from Claude.
+### Thumbnail Pipeline
+Takes research output and generates 3 CTR-optimized thumbnail variants using 8 proven CTR formulas (Curiosity Gap, Shocking Stat, Before/After, Contrarian, etc.). Generates Ideogram images if configured.
 
 ---
 
 ## Roadmap
 
-- [ ] Content auto-scheduler (Production Floor → TikTok/Instagram auto-post)
-- [ ] Merch design generator (AI prompt → Midjourney → ACRCloud → Printful → Shopify)
-- [ ] Live platform data refresh on schedule
+- [ ] Content auto-scheduler (queue → TikTok/Instagram auto-post)
+- [ ] Live platform analytics sync
 - [ ] Multi-user / team seats
 - [ ] SaaS packaging (Stripe billing, white-label)
 
